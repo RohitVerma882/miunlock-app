@@ -1,2 +1,2 @@
 # miunlock-app
-Xiaomi bootloader unlocker Android app.
+Xiaomi bootloader unlocker Android app
