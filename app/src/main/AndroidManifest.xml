@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+	package="com.rv882.miunlock">
+
+	<application
+		android:name=".UnlockApp"
+		android:allowBackup="false"
+		android:fullBackupContent="false"
+		android:icon="@mipmap/ic_launcher"
+		android:roundIcon="@mipmap/ic_launcher_round"
+		android:label="@string/app_name"
+		android:largeHeap="true"
+		android:supportsRtl="false"
+		android:theme="@style/AppTheme"
+		tools:replace="android:supportsRtl">
+		
+		<activity android:name=".MainActivity"
+			android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|keyboard|keyboardHidden|navigation"
+            android:resizeableActivity="true"
+			android:exported="true">
+			<intent-filter>
+				<action android:name="android.intent.action.MAIN"/>
+
+				<category android:name="android.intent.category.LAUNCHER"/>
+			</intent-filter>
+		</activity>
+		
+	</application>
+
+</manifest>
