@@ -7,6 +7,9 @@ import android.widget.Button;
 import android.view.View.OnClickListener;
 import android.view.View;
 import android.widget.EditText;
+import android.content.Intent;
+
+import java.nio.charset.StandardCharsets;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -15,20 +18,22 @@ import com.rv882.fastbootjava.FastbootDeviceManager;
 import com.rv882.fastbootjava.FastbootResponse;
 import com.rv882.fastbootjava.FastbootDeviceManagerListener;
 import com.rv882.fastbootjava.FastbootCommand;
+
 import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.codec.DecoderException;
-import java.nio.charset.StandardCharsets;
 
 public class MainActivity extends AppCompatActivity implements FastbootDeviceManagerListener {
 	
 	private TextView deviceTextview;
 	private TextView responseTextview;
-	private EditText cmdEditText;
+	private EditText dataEditText;
 	
 	private Button rebootButton;
-	private Button runButton;
-	private Button writeButton;
+	private Button unlockButton;
+    private Button lockButton;
+	private Button serialButton;
 	private Button varButton;
+	private Button loginButton;
 	
     private String deviceId;
 	private FastbootDeviceContext deviceContext;
@@ -37,32 +42,74 @@ public class MainActivity extends AppCompatActivity implements FastbootDeviceMan
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        
+        FastbootDeviceManager.Instance.addFastbootDeviceManagerListener(this);
 		
 		deviceTextview = findViewById(R.id.deviceTextview);
 		responseTextview = findViewById(R.id.responseTextview);
-		cmdEditText = findViewById(R.id.cmdEditText);
-		
-		rebootButton = findViewById(R.id.rebootButton);
-		rebootButton.setOnClickListener(new OnClickListener() {
+		dataEditText = findViewById(R.id.dataEditText);
+			
+		unlockButton = findViewById(R.id.unlockButton);
+		unlockButton.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View p1) {
-					reboot();
+					String hex_str = dataEditText.getText().toString().trim();
+                    if (!hex_str.isEmpty() && deviceContext != null) {
+                        byte[] data = hexToBytes(hex_str);
+                        if (data != null) {
+                            FastbootResponse response = deviceContext.sendCommand(FastbootCommand.download(data));
+                            if (response.getStatus() == FastbootResponse.ResponseStatus.DATA) {
+                                response = deviceContext.sendCommand(data);
+                                if (response.getStatus() == FastbootResponse.ResponseStatus.OKAY) {
+                                    response = deviceContext.sendCommand(FastbootCommand.oem("unlock"));
+                                }
+                            }
+                            responseTextview.setText(responseToString(response));
+                        }
+                    }
 				}
 			});
-			
-		runButton = findViewById(R.id.runButton);
-		runButton.setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View p1) {
-					run();
-				}
+            
+        lockButton = findViewById(R.id.lockButton);
+        lockButton.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View p1) {
+                    String hex_str = dataEditText.getText().toString().trim();
+                    if (!hex_str.isEmpty() && deviceContext != null) {
+                        byte[] data = hexToBytes(hex_str);
+                        if (data != null) {
+                            FastbootResponse response = deviceContext.sendCommand(FastbootCommand.download(data));
+                            if (response.getStatus() == FastbootResponse.ResponseStatus.DATA) {
+                                response = deviceContext.sendCommand(data);
+                                if (response.getStatus() == FastbootResponse.ResponseStatus.OKAY) {
+                                    response = deviceContext.sendCommand(FastbootCommand.oem("lock"));
+                                }
+                            }
+                            responseTextview.setText(responseToString(response));
+                        }
+                    }
+                }
+			});
+            
+        rebootButton = findViewById(R.id.rebootButton);
+        rebootButton.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View p1) {
+                    if (deviceContext != null) {
+                        FastbootResponse response = deviceContext.sendCommand(FastbootCommand.reboot());
+                        responseTextview.setText(responseToString(response));
+                    }
+                }
 			});
 			
-		writeButton = findViewById(R.id.writeButton);
-		writeButton.setOnClickListener(new OnClickListener() {
+		serialButton = findViewById(R.id.serialButton);
+	    serialButton.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View p1) {
-					write();
+					if (deviceContext != null) {
+                        FastbootResponse response = deviceContext.sendCommand(FastbootCommand.getVar("serialno"));
+                        responseTextview.setText(responseToString(response));
+                    }
 				}
 			});
 			
@@ -70,50 +117,29 @@ public class MainActivity extends AppCompatActivity implements FastbootDeviceMan
 		varButton.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View p1) {
-					var();
+					if (deviceContext != null) {
+                        FastbootResponse response = deviceContext.sendCommand(FastbootCommand.getVar("token"));
+                        responseTextview.setText(responseToString(response));
+                    }
 				}
-
-				
 			});
-		
-		FastbootDeviceManager.Instance.addFastbootDeviceManagerListener(this);
+            
+        loginButton = findViewById(R.id.loginButton);
+        loginButton.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View p1) {
+                    startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+                }
+			});
     }
-	
-	private void var() {
-		if (deviceContext != null) {
-			FastbootResponse response = deviceContext.sendCommand(FastbootCommand.getVar("token"));
-			responseTextview.setText(response.getData());
-		}
-	}
-	
-	private void run() {
-		String data = cmdEditText.getText().toString();
-		if (!data.isEmpty() && deviceContext != null) {
-			FastbootResponse response = deviceContext.sendCommand(FastbootCommand.download(hexToBytes(data)));
-			responseTextview.setText(response.getData() + "\n" + response.getStatus().toString());
-		}
-	}
-	
-	private void reboot() {
-		if (deviceContext != null) {
-			FastbootResponse response = deviceContext.sendCommand(FastbootCommand.oem("unlock"));
-			responseTextview.setText(response.getData());
-		}
-	}
-	
-	private void write(){
-		if (deviceContext != null) {
-			FastbootResponse response = deviceContext.sendCommand(hexToBytes(null));
-			responseTextview.setText(response.getData() + "\n" + response.getStatus().toString());
-		}
-	}
-	
-	private void closeDeviceContext() {
-		if (deviceContext != null) {
-			deviceContext.close();
-			deviceContext = null;
-		}
-	}
+    
+    private String responseToString(FastbootResponse response) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Status: ").append(response.getStatus().toString());
+        sb.append('\n');
+        sb.append("Data: ").append(response.getData());
+        return sb.toString();
+    }
 	
 	private byte[] hexToBytes(String hex) {
 		try {
@@ -125,27 +151,38 @@ public class MainActivity extends AppCompatActivity implements FastbootDeviceMan
 
 	@Override
 	public void onFastbootDeviceAttached(String deviceId) {
-		FastbootDeviceManager.Instance.connectToDevice(deviceId);
+		if (deviceContext == null) {
+            this.deviceId = deviceId;
+            FastbootDeviceManager.Instance.connectToDevice(deviceId);
+        }
 	}
 
 	@Override
 	public void onFastbootDeviceDetached(String deviceId) {
-		closeDeviceContext();
-		
-		deviceTextview.setText("No connected device");
+		if (deviceId != null && deviceId.equals(this.deviceId)) {
+            if (deviceContext != null) {
+                deviceContext.close();
+                deviceContext = null;
+            }
+            
+            deviceTextview.setText("No connected Device");
+		}
 	}
 
 	@Override
 	public void onFastbootDeviceConnected(String deviceId, FastbootDeviceContext deviceContext) {
 		this.deviceContext = deviceContext;
 		
-		deviceTextview.setText("Connected device: " + deviceId);
+		deviceTextview.setText("Connected Device: " + deviceId);
 	}
 
 	@Override
 	protected void onDestroy() {
 		FastbootDeviceManager.Instance.removeFastbootDeviceManagerListener(this);
-		closeDeviceContext();
-		super.onDestroy();
+		if (deviceContext != null) {
+            deviceContext.close();
+            deviceContext = null;
+        }
+        super.onDestroy();
 	}
 }

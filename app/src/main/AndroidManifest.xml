@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
 	package="com.rv882.miunlock">
+    
+    <uses-permission android:name="android.permission.INTERNET" />
 
 	<application
 		android:name=".UnlockApp"
@@ -26,6 +28,10 @@
 			</intent-filter>
 		</activity>
 		
+        <activity android:name=".LoginActivity"
+            android:configChanges="orientation|screenSize|smallestScreenSize|density|screenLayout|keyboard|keyboardHidden|navigation"
+            android:resizeableActivity="true"/>
+        
 	</application>
 
 </manifest>

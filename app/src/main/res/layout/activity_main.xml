@@ -3,59 +3,88 @@
 	android:orientation="vertical"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
-	android:padding="16dp"
 	android:background="@android:color/white">
 
-	<TextView
-		android:id="@+id/deviceTextview"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:text="No connected device"
-		android:textAppearance="?android:attr/textAppearanceSmall"/>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fillViewport="true">
 
-	<TextView
-		android:id="@+id/responseTextview"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:text="No response"
-		android:textAppearance="?android:attr/textAppearanceSmall"
-		android:textIsSelectable="true"
-		android:layout_marginTop="8dp"/>
-	
-	<Button
-		android:id="@+id/rebootButton"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:layout_marginTop="16dp"
-		android:text="Oem Unlock"/>
-	
-	<EditText
-		android:id="@+id/cmdEditText"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:layout_marginTop="16dp"
-		android:text=""/>
-	
-	<Button
-		android:id="@+id/runButton"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:layout_marginTop="8dp"
-		android:text="Run"/>
-	
-	<Button
-		android:id="@+id/writeButton"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:layout_marginTop="8dp"
-		android:text="Write"/>
-	
-	<Button
-		android:id="@+id/varButton"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:layout_marginTop="8dp"
-		android:text="getVar"/>
+        <LinearLayout 
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="16dp">
+
+            <TextView
+                android:id="@+id/deviceTextview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="No connected Device"
+                android:textAppearance="?android:attr/textAppearanceSmall"/>
+
+            <TextView
+                android:id="@+id/responseTextview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="No Response"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textIsSelectable="true"
+                android:layout_marginTop="8dp"/>
+
+            <EditText
+                android:id="@+id/dataEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text=""
+                android:hint="Encrypted Data"/>
+
+            <Button
+                android:id="@+id/unlockButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Unlock"/>
+
+            <Button
+                android:id="@+id/lockButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Lock"/>
+
+            <Button
+                android:id="@+id/rebootButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:text="Reboot"/>
+
+            <Button
+                android:id="@+id/serialButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Get Serial"/>
+
+            <Button
+                android:id="@+id/varButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Get Token"/>
+            
+            <Button
+                android:id="@+id/loginButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:text="Login"/>
+            
+        </LinearLayout>
+        
+    </ScrollView>
 
 </LinearLayout>
 
