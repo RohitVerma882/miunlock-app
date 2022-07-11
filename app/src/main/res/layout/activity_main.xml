@@ -83,6 +83,13 @@
                 android:text="Get Token (Mtk)"/>
             
             <Button
+                android:id="@+id/productButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Get Product"/>
+            
+            <Button
                 android:id="@+id/loginButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
