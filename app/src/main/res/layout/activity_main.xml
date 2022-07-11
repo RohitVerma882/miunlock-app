@@ -67,13 +67,20 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="Get Serial"/>
-
+            
             <Button
                 android:id="@+id/varButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="Get Token"/>
+                android:text="Get Token (Qcom)"/>
+            
+            <Button
+                android:id="@+id/var2Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Get Token (Mtk)"/>
             
             <Button
                 android:id="@+id/loginButton"

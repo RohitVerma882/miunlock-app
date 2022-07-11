@@ -33,6 +33,7 @@ public class MainActivity extends AppCompatActivity implements FastbootDeviceMan
     private Button lockButton;
 	private Button serialButton;
 	private Button varButton;
+    private Button var2Button;
 	private Button loginButton;
 	
     private String deviceId;
@@ -122,6 +123,17 @@ public class MainActivity extends AppCompatActivity implements FastbootDeviceMan
                         responseTextview.setText(responseToString(response));
                     }
 				}
+			});
+            
+        var2Button = findViewById(R.id.var2Button);
+        var2Button.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View p1) {
+                    if (deviceContext != null) {
+                        FastbootResponse response = deviceContext.sendCommand(FastbootCommand.oem("get_token"));
+                        responseTextview.setText(responseToString(response));
+                    }
+                }
 			});
             
         loginButton = findViewById(R.id.loginButton);
