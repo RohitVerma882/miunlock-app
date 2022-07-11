@@ -9,3 +9,15 @@ repositories {
 dependencies {
   implementation fileTree(dir: "libs", include: ["*.jar"])
 }
+
+jar {
+    manifest { 
+      attributes "Main-Class": "com.rv882.miunlock.MiUnlock"
+    }
+    classifier = 'all'
+    baseName = 'miunlock'
+    from {
+      configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
+}
