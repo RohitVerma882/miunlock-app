@@ -1,16 +1,18 @@
 package com.rv882.miunlock.model;
 
 import java.util.UUID;
-import org.apache.commons.codec.digest.DigestUtils;
 import java.util.HashMap;
+
+import org.apache.commons.codec.digest.DigestUtils;
+
 import com.rv882.miunlock.unlock.XiaomiServiceEntry;
 import com.rv882.miunlock.unlock.XiaomiProcedureException;
 import com.rv882.miunlock.inet.CustomHttpException;
 import com.rv882.miunlock.utils.Utils;
 
 public class Argument {
-    private boolean verbose = false;
-    private String user = null, password = null, token = null, product = null, userId = null, deviceId = null, passToken = null;
+    
+    private String token = null, product = null, userId = null, deviceId = null, passToken = null;
 	private String pcId = null, deviceName = null, boardVer = null, socId = null;
 	private HashMap<String, XiaomiServiceEntry> serviceMap = new HashMap<>();
 	
@@ -22,30 +24,6 @@ public class Argument {
         }
         return instance;
     }
-	
-	public void setVerbose(boolean verbose) {
-		this.verbose = verbose;
-	}
-
-	public boolean isVerbose() {
-		return verbose;
-	}
-
-	public void setUser(String user) {
-		this.user = user;
-	}
-
-	public String getUser() {
-		return user;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	public String getPassword() {
-		return password;
-	}
 
 	public void setToken(String token) {
 		this.token = token;
