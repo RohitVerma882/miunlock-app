@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class LoginActivity extends AppCompatActivity {
 
+    private final String LOGIN_URL = "https://account.xiaomi.com/pass/serviceLogin?sid=unlockApi&json=false&passive=true&hidden=false&_snsDefault=facebook&checkSafePhone=true&_locale=en";
     private WebView webview;
     private TextView loginData;
     
@@ -23,7 +24,7 @@ public class LoginActivity extends AppCompatActivity {
 
         webview = findViewById(R.id.webview);
         webview.setWebViewClient(new MyWebViewClient());
-        webview.loadUrl("https://account.xiaomi.com/pass/serviceLogin?sid=unlockApi&json=false&passive=true&hidden=false&_snsDefault=facebook&checkSafePhone=true&_locale=en");
+        webview.loadUrl(LOGIN_URL);
         webview.getSettings().setJavaScriptEnabled(true);
         
         loginData = findViewById(R.id.loginData);
