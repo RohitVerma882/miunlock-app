@@ -1,7 +1,7 @@
 # miunlock-app
 Xiaomi bootloader unlocker Android app
 
-note: Indian host url used in jar lib
+note: ```https://in-unlock.update.intl.miui.com``` host url used in jar 
 ## Reference
 https://github.com/Canny1913/miunlock,
 
